@@ -1,0 +1,57 @@
+runtime: python311
+
+# Instance configuration
+instance_class: F2
+automatic_scaling:
+  min_instances: 1
+  max_instances: 10
+
+# Environment variables
+env_variables:
+  OPENAI_API_KEY: "your_openai_api_key_here"
+  TWILIO_ACCOUNT_SID: "your_twilio_account_sid_here"
+  TWILIO_AUTH_TOKEN: "your_twilio_auth_token_here"
+  PHONE_NUMBER_FROM: "your_twilio_phone_number_here"
+  DOMAIN: "your-app-id.uc.r.appspot.com"
+  
+  # Phone authorization (optional)
+  VERIFIED_PHONE_NUMBERS: "+1234567890,+1987654321"
+  ALLOW_ALL_US_CANADA: "false"
+  
+  # Concurrency settings
+  MAX_CONCURRENT_CALLS: "10"
+  MAX_OPENAI_CONNECTIONS: "20"
+  
+  # Database configuration
+  GOOGLE_CLOUD_SQL_CONNECTION_NAME: "your-project:region:instance-name"
+  DB_USER: "postgres"
+  DB_PASSWORD: "your_database_password"
+  DB_NAME: "voice_assistant"
+
+# Cloud SQL settings
+beta_settings:
+  cloud_sql_instances: "your-project:region:instance-name"
+
+# VPC connector (if using VPC)
+# vpc_access_connector:
+#   name: "projects/your-project/locations/region/connectors/your-connector"
+
+# Health checks
+readiness_check:
+  path: "/health"
+  check_interval_sec: 5
+  timeout_sec: 4
+  failure_threshold: 2
+  success_threshold: 2
+
+liveness_check:
+  path: "/health"
+  check_interval_sec: 30
+  timeout_sec: 4
+  failure_threshold: 4
+  success_threshold: 2
+
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10 
