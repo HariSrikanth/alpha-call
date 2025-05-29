@@ -322,7 +322,7 @@ class CallLogger:
         """Log conversation message"""
         try:
             async with db_manager.get_session() as session:
-                from sqlalchemy import select
+                from sqlalchemy import select, update
                 
                 # Get call_log id from call_sid
                 stmt = select(CallLog.id).where(CallLog.call_sid == call_sid)
@@ -354,14 +354,14 @@ class CallLogger:
                         .where(CallLog.call_sid == call_sid)
                         .values(total_ai_responses=CallLog.total_ai_responses + 1)
                     )
+                    await session.execute(stmt)
                 elif speaker == "user":
                     stmt = (
                         update(CallLog)
                         .where(CallLog.call_sid == call_sid)
                         .values(total_user_inputs=CallLog.total_user_inputs + 1)
                     )
-                
-                await session.execute(stmt)
+                    await session.execute(stmt)
                 
         except Exception as e:
             logger.error(f"Failed to log conversation for {call_sid}: {e}")

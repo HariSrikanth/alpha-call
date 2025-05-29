@@ -424,6 +424,9 @@ async def handle_media_stream(websocket: WebSocket):
                     "instructions": SYSTEM_MESSAGE,
                     "modalities": ["text", "audio"],
                     "temperature": 0.8,
+                    "input_audio_transcription": {
+                        "model": "whisper-1"
+                    }
                 }
             }
             
